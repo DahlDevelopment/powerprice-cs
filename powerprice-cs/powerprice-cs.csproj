@@ -22,4 +22,7 @@
     <UseSGen>false</UseSGen>
     <LinkMode>None</LinkMode>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\powerprice-cs-server\powerprice-cs-server.csproj" />
+  </ItemGroup>
 </Project>
