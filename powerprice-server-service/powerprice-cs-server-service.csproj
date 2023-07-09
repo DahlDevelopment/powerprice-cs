@@ -11,4 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\powerprice-cs-server\powerprice-cs-server.csproj" />
+  </ItemGroup>
 </Project>

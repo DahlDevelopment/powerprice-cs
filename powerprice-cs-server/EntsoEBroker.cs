@@ -14,7 +14,7 @@ namespace powerprice_cs_server
 
 		}
 
-        public IPriceData GetPriceData()
+        public IEntsoEData GetPriceData()
         {
             throw new NotImplementedException();
         }

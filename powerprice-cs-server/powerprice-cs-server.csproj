@@ -1,16 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>net7.0-macos</TargetFramework>
-    <RootNamespace>powerprice_cs_server</RootNamespace>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>powerprice_server</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CreatePackage>false</CreatePackage>
-    <UseSGen>false</UseSGen>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <CreatePackage>false</CreatePackage>
-    <UseSGen>false</UseSGen>
-  </PropertyGroup>
+
 </Project>
