@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "powerprice-cs", "powerprice
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "powerprice-cs-server", "powerprice-cs-server\powerprice-cs-server.csproj", "{6B72D8D8-DCA1-4D4A-B43A-6ED459A8B525}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "powerprice-cs-server-service", "powerprice-server-service\powerprice-cs-server-service.csproj", "{7695D1D0-8E35-4F62-BD91-C6D0751595B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6B72D8D8-DCA1-4D4A-B43A-6ED459A8B525}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B72D8D8-DCA1-4D4A-B43A-6ED459A8B525}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B72D8D8-DCA1-4D4A-B43A-6ED459A8B525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7695D1D0-8E35-4F62-BD91-C6D0751595B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7695D1D0-8E35-4F62-BD91-C6D0751595B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7695D1D0-8E35-4F62-BD91-C6D0751595B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7695D1D0-8E35-4F62-BD91-C6D0751595B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

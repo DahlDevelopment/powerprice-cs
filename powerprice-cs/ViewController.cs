@@ -1,14 +1,9 @@
 ﻿using ObjCRuntime;
-using powerprice_cs_server;
 
 namespace powerprice_cs;
 
 
 public partial class ViewController : NSViewController {
-
-	EntsoEBroker _broker;
-	PowerPriceServer _server;
-
 
     protected ViewController (NativeHandle handle) : base (handle)
 	{
@@ -20,9 +15,6 @@ public partial class ViewController : NSViewController {
 	{
 		base.ViewDidLoad ();
 
-		_broker = new();
-		_server = new(_broker);
-		
 	}
 
 	public override NSObject RepresentedObject {
