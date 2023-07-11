@@ -11,7 +11,7 @@ namespace powerprice_cs_server
 
         public EntsoEBroker()
 		{
-
+             
 		}
 
         public IEntsoEData GetPriceData()
