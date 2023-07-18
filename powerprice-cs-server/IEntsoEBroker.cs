@@ -3,7 +3,10 @@ namespace powerprice_cs_server
 {
 	public interface IEntsoEBroker
 	{
-        IEntsoEData GetPriceData(/*date or other form of get-identifier*/);
+        IEntsoEData GetPriceData(DateOnly date);
+		IEntsoEData GetPriceData(DateOnly date, Options options);
 	}
+
+	
 }
 

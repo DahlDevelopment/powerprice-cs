@@ -10,4 +10,9 @@
   <ItemGroup>
     <ProjectReference Include="..\powerprice-cs-server\powerprice-cs-server.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update=".entsoe_key_secret">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
