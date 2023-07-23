@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "powerprice_cs_rpc";
+
+package powerprice;
+
+service PriceData {
+    rpc GetPriceData(PriceDataRequest) returns (PriceDataReply);
+}
+
+message PriceDataReply {
+    repeated double priceData = 1;
+}
+
+message PriceDataRequest {
+    google.protobuf.Timestamp date = 1;
+}
