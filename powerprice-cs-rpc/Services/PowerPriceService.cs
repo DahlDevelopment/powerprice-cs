@@ -1,5 +1,6 @@
 ﻿using Grpc.Core;
 using powerprice_cs_rpc;
+using powerprice_cs_server;
 
 namespace powerprice_cs_rpc.Services;
 
@@ -14,10 +15,25 @@ public class PowerPriceService : PriceData.PriceDataBase
 
     public override Task<PriceDataReply> GetPriceData(PriceDataRequest request, ServerCallContext context)
     {
+        string enstoeKeyFile = @".entsoe_key_secret";
+        var line = File.ReadLines(enstoeKeyFile);
+        //Console.WriteLine("File Contents: " + line.First());
+
+        var broker = new EntsoEBroker(line.First());
+        var server = new PowerPriceServer(broker);
+
+        Options opts = new()
+        {
+            Zone = Zones.NO4,
+            Date = DateOnly.FromDateTime(DateTime.Today),
+            DocumentType = DocumentTypes.A44
+        };
+
+        var data = server.GetPriceData(DateOnly.FromDateTime(DateTime.Today), opts);
+
         return Task.FromResult(new PriceDataReply
         {
-            PriceData = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }
+            PriceData = { data.Data }
         });
     }
 }
-

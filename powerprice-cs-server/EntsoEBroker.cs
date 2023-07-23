@@ -124,7 +124,10 @@ namespace powerprice_cs_server
                 Console.Write(res.Result.ToString());
             }
 
-            return new EntsoEPriceData();
+            var dummyData = new EntsoEPriceData();
+            dummyData.Data = new List<double>{ 9,8,7,6,5,4,3,2,1};
+
+            return dummyData;
         }
 
         public IEntsoEData GetPriceData(DateOnly date, Options options)

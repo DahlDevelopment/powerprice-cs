@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\powerprice-cs-server\powerprice-cs-server.csproj" />
+    <ProjectReference Include="..\powerprice-cs-client\powerprice-cs-client.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update=".entsoe_key_secret">
