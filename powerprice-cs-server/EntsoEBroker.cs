@@ -34,7 +34,7 @@ namespace powerprice_cs_server
         public Options(DateOnly date)                        : this(date, DocumentTypes.A44, Zones.NO4) { }
     }
 
-    public static class URLBuilder
+    internal static class URLBuilder
     {
         public static class Headers
         {
@@ -49,7 +49,7 @@ namespace powerprice_cs_server
         }
     }
 
-    public static class RESTClient
+    internal static class RESTClient
     {
         private static readonly HttpClient _client = new();
 
