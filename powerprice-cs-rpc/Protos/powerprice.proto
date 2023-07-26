@@ -6,7 +6,7 @@ option csharp_namespace = "powerprice_cs_rpc";
 
 package powerprice;
 
-service PriceData {
+service PriceDataService {
     rpc GetPriceData(PriceDataRequest) returns (PriceDataReply);
 }
 

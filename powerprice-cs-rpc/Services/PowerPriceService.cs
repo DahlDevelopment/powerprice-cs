@@ -4,7 +4,7 @@ using powerprice_cs_server;
 
 namespace powerprice_cs_rpc.Services;
 
-public class PowerPriceService : PriceData.PriceDataBase
+public class PowerPriceService : PriceDataService.PriceDataServiceBase
 {
     private readonly ILogger<PowerPriceService> _logger;
     public PowerPriceService(ILogger<PowerPriceService> logger)
