@@ -12,6 +12,10 @@ service PriceDataService {
 
 message PriceDataReply {
     repeated double priceData = 1;
+    repeated google.protobuf.Timestamp timestamps = 2;
+    string currency = 3;
+    string measureUnit = 4;
+    string timeResolution = 5;    
 }
 
 message PriceDataRequest {

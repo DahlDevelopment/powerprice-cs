@@ -126,6 +126,10 @@ namespace powerprice_cs_server
 
             var dummyData = new EntsoEPriceData();
             dummyData.Data = new List<double>{ 9,8,7,6,5,4,3,2,1};
+            dummyData.Timestamps = new List<DateTime> { DateTime.Now, DateTime.Now.AddDays(1) };
+            dummyData.Currency = "EUR";
+            //dummyData.MeasureUnit = "MWH"; // Don't include to see how null is handled
+            dummyData.TimeResolution = "PT60M";
             dummyData.RawData = res.Result.ToString();
 
             return dummyData;

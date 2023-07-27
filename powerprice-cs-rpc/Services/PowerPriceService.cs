@@ -27,11 +27,27 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
             DocumentType = DocumentTypes.A44
         };
 
-        var data = PowerPriceServer.GetPriceData(broker, DateOnly.FromDateTime(DateTime.Today), opts);
+        var data = (EntsoEPriceData)PowerPriceServer.GetPriceData(broker, DateOnly.FromDateTime(DateTime.Today), opts);
+
+        // for-loop to construct the correct timestamp objects
+        //List<Google.Protobuf.WellKnownTypes.Timestamp> timestamps = new();
+        //foreach(var timestamp in data.TimeStamps)
+        //{
+        //    timestamps.Add(Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(timestamp));
+        //}
+
+        // testing lambda/linq
+        var timestamps = data.Timestamps
+            .Select(x => Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(x.ToUniversalTime()))
+            .ToList();
 
         return Task.FromResult(new PriceDataReply
         {
-            PriceData = { data.Data }
+            PriceData       = { data.Data },
+            Timestamps      = { timestamps },
+            Currency        = data.Currency,
+            MeasureUnit     = data.MeasureUnit,
+            TimeResolution  = data.TimeResolution
         });
     }
 }
