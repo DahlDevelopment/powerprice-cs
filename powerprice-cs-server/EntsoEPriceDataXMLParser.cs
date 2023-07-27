@@ -1,11 +1,11 @@
-﻿using System;
-namespace powerprice_server
+﻿using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("entsoe-pricedata-sandbox")]
+namespace powerprice_cs_server
 {
-	internal class EntsoEPriceDataXMLParser
+    internal static class EntsoEPriceDataXMLParser
 	{
-		public EntsoEPriceDataXMLParser()
-		{
-		}
+
 	}
 }
 
