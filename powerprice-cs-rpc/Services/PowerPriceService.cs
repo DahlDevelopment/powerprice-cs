@@ -1,5 +1,4 @@
 ﻿using Grpc.Core;
-using powerprice_cs_rpc;
 using powerprice_cs_server;
 
 namespace powerprice_cs_rpc.Services;
@@ -19,8 +18,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
         var line = File.ReadLines(enstoeKeyFile);
         //Console.WriteLine("File Contents: " + line.First());
 
-        var broker = new EntsoEBroker(line.First());
-        var server = new PowerPriceServer(broker);
+        var broker = new EntsoEPriceDataBroker(line.First());
 
         Options opts = new()
         {
@@ -29,7 +27,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
             DocumentType = DocumentTypes.A44
         };
 
-        var data = server.GetPriceData(DateOnly.FromDateTime(DateTime.Today), opts);
+        var data = PowerPriceServer.GetPriceData(broker, DateOnly.FromDateTime(DateTime.Today), opts);
 
         return Task.FromResult(new PriceDataReply
         {

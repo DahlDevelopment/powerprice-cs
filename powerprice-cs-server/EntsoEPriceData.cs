@@ -1,11 +1,10 @@
-﻿using System;
-
-namespace powerprice_cs_server
+﻿namespace powerprice_cs_server
 {
-	public class EntsoEPriceData : IEntsoEData
+    public class EntsoEPriceData : IEntsoEData<double>
 	{
 		private List<double> _priceData;
 		private List<DateTime> _timeStamps;
+		private string _rawData;
 
 		public EntsoEPriceData()
 		{
@@ -22,6 +21,12 @@ namespace powerprice_cs_server
 			get => _timeStamps;
 			set => _timeStamps = value;
 		}
+
+		public string RawData {
+			get => _rawData;
+			set => _rawData = value;
+		}
+		
     }
 }
 
