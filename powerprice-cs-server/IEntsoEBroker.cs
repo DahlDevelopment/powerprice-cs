@@ -1,10 +1,10 @@
 ﻿using System;
 namespace powerprice_cs_server
 {
-	public interface IEntsoEBroker
+	public interface IEntsoEBroker<T>
 	{
-        IEntsoEData GetPriceData(DateOnly date);
-		IEntsoEData GetPriceData(DateOnly date, Options options);
+        IEntsoEData<T> GetPriceData(DateOnly date);
+		IEntsoEData<T> GetPriceData(DateOnly date, Options options);
 	}
 
 	

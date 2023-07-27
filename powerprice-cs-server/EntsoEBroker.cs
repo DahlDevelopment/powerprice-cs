@@ -79,25 +79,25 @@ namespace powerprice_cs_server
 
 
     /// <summary>
-    /// EntsoEBroker: 
+    /// EntsoEPriceDataBroker: 
     ///     Implements IEntsoEBroker using the Entso-E REST API.
     /// </summary>
     /// <remarks>
     ///     Helper classes and structs defined above.
     /// </remarks>
-    public class EntsoEBroker : IEntsoEBroker
+    public class EntsoEPriceDataBroker : IEntsoEBroker<double>
 	{
         private static readonly HttpClient _httpClient = new();
         private readonly string _entsoeapi_key;
         public Options _options { get; set; } = new Options();
 
-        public EntsoEBroker(string entsoeapi_key)
+        public EntsoEPriceDataBroker(string entsoeapi_key)
 		{
             _entsoeapi_key = entsoeapi_key;
             Console.WriteLine("Key: " + _entsoeapi_key);
         }
 
-        ~EntsoEBroker()
+        ~EntsoEPriceDataBroker()
         {
             _httpClient.Dispose();
         }
@@ -107,7 +107,7 @@ namespace powerprice_cs_server
         /// </summary>
         /// <returns>IEntsoEData Containing the data pulled from Entso-E</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public IEntsoEData GetPriceData(DateOnly date)
+        public IEntsoEData<double> GetPriceData(DateOnly date)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
@@ -126,11 +126,12 @@ namespace powerprice_cs_server
 
             var dummyData = new EntsoEPriceData();
             dummyData.Data = new List<double>{ 9,8,7,6,5,4,3,2,1};
+            dummyData.RawData = res.Result.ToString();
 
             return dummyData;
         }
 
-        public IEntsoEData GetPriceData(DateOnly date, Options options)
+        public IEntsoEData<double> GetPriceData(DateOnly date, Options options)
         {
             _options = options;
             return GetPriceData(date);

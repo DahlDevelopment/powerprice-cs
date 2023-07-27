@@ -2,10 +2,11 @@
 
 namespace powerprice_cs_server
 {
-	public interface IEntsoEData
+	public interface IEntsoEData<T>
 	{
-        public List<double> Data { set; get; }
+        public List<T> Data { set; get; }
 		public List<DateTime> TimeStamps { set; get; }
+		public string RawData { set; get; }
 	}
 }
 

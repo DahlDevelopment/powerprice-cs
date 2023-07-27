@@ -1,8 +1,4 @@
-﻿using Grpc.Net.Client;
-using powerprice_cs_client;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Web;
+﻿using powerprice_cs_client;
 
 // The port number must match the poert of the gRPC server
 var com = new TCPIPCom();
