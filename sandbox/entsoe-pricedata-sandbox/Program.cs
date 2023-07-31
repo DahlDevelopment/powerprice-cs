@@ -1,6 +1,10 @@
 ﻿using System.Xml;
+using System.Xml.Linq;
 using powerprice_cs_server;
 
+
+// ---------- GET DATA ----------
+// ------------------------------
 // Get the entsoe api key
 //string enstoeKeyFile = @".entsoe_key_secret";
 //var line = File.ReadLines(enstoeKeyFile);
@@ -22,26 +26,27 @@ using powerprice_cs_server;
 //var filePath = "rawdata.xml";
 //File.WriteAllText(filePath, data.RawData);
 
-XmlDocument xmlDoc = new XmlDocument();
+// ---------- GET DATA END ----------
+// ----------------------------------
+
+XmlDocument xmlDoc = new();
 xmlDoc.Load("rawdata.xml");
 
-XmlNodeList points = xmlDoc.GetElementsByTagName("Point");
-foreach (XmlNode point in points)
-{
-    int positionS = int.Parse(point["position"].InnerText);
-    float valueS = float.Parse(point["price.amount"].InnerText);
+// Need to reference the xml document namespace
+// when searching it. Without that namespace reference
+// nothing is found using LINQ XML.
+// https://stackoverflow.com/a/46397001
+XElement root = XElement.Load("rawdata.xml");
+var timeSeries = root.Descendants(root.Name.Namespace + "TimeSeries");
 
-    Console.WriteLine($"Positon: {positionS}, price.amount: {valueS}");
-}
+var values = from point in timeSeries.Descendants(root.Name.Namespace + "Point")
+             select (double)point.Element(root.Name.Namespace + "price.amount");
 
-XmlNodeList timeSeries = xmlDoc.GetElementsByTagName("TimeSeries");
+//IEnumerable<double> values = from val in root.Descendants(root.Name.Namespace + "Point")
+//                             select (double)val.Element("price.amount");
 
-List<string> currencies = new();
-List<string> priceMeasureUnit = new();
 
-foreach (XmlNode timeSerie in timeSeries)
-{
-    
-}
-
-//var parser = new EntsoEPriceDataXMLParser();
+//var vals = values.ToList();
+var a = 1;
+//from item in purchaseOrder.Descendants("Item")
+//select (string)item.Attribute("PartNumber");

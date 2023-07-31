@@ -27,7 +27,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
             DocumentType = DocumentTypes.A44
         };
 
-        var data = (EntsoEPriceData)PowerPriceServer.GetPriceData(broker, DateOnly.FromDateTime(DateTime.Today), opts);
+        var data = PowerPriceServer.GetPriceData(broker, DateOnly.FromDateTime(DateTime.Today), opts) as EntsoEPriceData;
 
         // for-loop to construct the correct timestamp objects
         //List<Google.Protobuf.WellKnownTypes.Timestamp> timestamps = new();
