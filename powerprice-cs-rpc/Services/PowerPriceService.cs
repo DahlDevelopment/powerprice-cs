@@ -47,7 +47,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
             Timestamps      = { timestamps },
             Currency        = data.Currency,
             MeasureUnit     = data.MeasureUnit,
-            TimeResolution  = data.TimeResolution
+            TimeResolution  = data.Resolution
         });
     }
 }
