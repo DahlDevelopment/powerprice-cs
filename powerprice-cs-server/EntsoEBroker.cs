@@ -85,7 +85,7 @@ namespace powerprice_cs_server
     /// <remarks>
     ///     Helper classes and structs defined above.
     /// </remarks>
-    public class EntsoEPriceDataBroker : IEntsoEBroker<double>
+    public class EntsoEPriceDataBroker : IEntsoEBroker
 	{
         private static readonly HttpClient _httpClient = new();
         private readonly string _entsoeapi_key;
@@ -107,7 +107,7 @@ namespace powerprice_cs_server
         /// </summary>
         /// <returns>IEntsoEData Containing the data pulled from Entso-E</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public IEntsoEData<double> GetPriceData(DateOnly date)
+        public IEntsoEData GetPriceData(DateOnly date)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
@@ -125,7 +125,7 @@ namespace powerprice_cs_server
             }
 
             var dummyData = new EntsoEPriceData();
-            dummyData.Data = new List<double>{ 9,8,7,6,5,4,3,2,1};
+            dummyData.PriceData = new List<double>{ 9,8,7,6,5,4,3,2,1};
             dummyData.Timestamps = new List<DateTime> { DateTime.Now, DateTime.Now.AddDays(1) };
             dummyData.Currency = "EUR";
             //dummyData.MeasureUnit = "MWH"; // Don't include to see how null is handled
@@ -135,7 +135,7 @@ namespace powerprice_cs_server
             return dummyData;
         }
 
-        public IEntsoEData<double> GetPriceData(DateOnly date, Options options)
+        public IEntsoEData GetPriceData(DateOnly date, Options options)
         {
             _options = options;
             return GetPriceData(date);

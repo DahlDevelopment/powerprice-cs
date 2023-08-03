@@ -8,7 +8,7 @@
 			Console.WriteLine("Server Initiated");
 		}
 
-		public static IEntsoEData<double> GetPriceData(EntsoEPriceDataBroker broker, DateOnly date, Options opts)
+		public static IEntsoEData GetPriceData(EntsoEPriceDataBroker broker, DateOnly date, Options opts)
 		{
 			return broker.GetPriceData(date, opts);
 		}

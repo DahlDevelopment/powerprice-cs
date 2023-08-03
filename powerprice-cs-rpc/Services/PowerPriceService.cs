@@ -43,7 +43,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
 
         return Task.FromResult(new PriceDataReply
         {
-            PriceData       = { data.Data },
+            PriceData       = { data.PriceData },
             Timestamps      = { timestamps },
             Currency        = data.Currency,
             MeasureUnit     = data.MeasureUnit,

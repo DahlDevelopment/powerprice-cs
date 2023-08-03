@@ -2,11 +2,21 @@
 
 namespace powerprice_cs_server
 {
-	public interface IEntsoEData<T>
+	public interface IEntsoEData
 	{
-        public List<T> Data { set; get; }
-		public List<DateTime> Timestamps { set; get; }
-		public string RawData { set; get; }
+		public IEntsoETimeSeries TimeSeries { set; get; }
+		public string Type { set; get; }
+		public DateTime CreatedDateTime { set; get; }
+		public struct TimeInterval
+		{
+			public DateTime Start { set; get; }
+			public DateTime End { set; get; }
+		}
+	}
+
+	public interface IEntsoETimeSeries
+	{
+		public string MRID { set; get; }
+		public string BusinessType { set; get; }
 	}
 }
-
