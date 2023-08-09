@@ -9,7 +9,7 @@ var reply = client.GetPowerPriceData(DateOnly.FromDateTime(DateTime.UtcNow));
 
 //var reply = await client.GetPriceDataAsync(new PriceDataRequest { Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTime.UtcNow) });
 Console.WriteLine("Price Data: " + reply.PriceData);
-Console.WriteLine("Timestamps: " + reply.Timestamps);
+//Console.WriteLine("Timestamps: " + reply.Timestamps);
 Console.WriteLine("Currency: " + reply.Currency);
 Console.WriteLine("MeasureUnit: " + reply.MeasureUnit);
 Console.WriteLine("TimeResolution: " + reply.TimeResolution);

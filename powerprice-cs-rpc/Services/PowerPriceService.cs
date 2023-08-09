@@ -20,7 +20,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
 
         var broker = new EntsoEPriceDataBroker(line.First());
 
-        Options opts = new()
+        PriceDataOptions opts = new()
         {
             Zone = Zones.NO4,
             Date = DateOnly.FromDateTime(DateTime.Today),
@@ -28,7 +28,8 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
         };
 
         var data = PowerPriceServer.GetPriceData(broker, DateOnly.FromDateTime(DateTime.Today), opts) as EntsoEPriceData;
-
+        EntsoEPriceDataPeriod? period = data!.Periods.First();
+        
         // for-loop to construct the correct timestamp objects
         //List<Google.Protobuf.WellKnownTypes.Timestamp> timestamps = new();
         //foreach(var timestamp in data.TimeStamps)
@@ -37,17 +38,33 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
         //}
 
         // testing lambda/linq
-        var timestamps = data.Timestamps
-            .Select(x => Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(x.ToUniversalTime()))
-            .ToList();
+        //var timestamps = data.Timestamps
+        //    .Select(x => Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(x.ToUniversalTime()))
+        //    .ToList();
 
-        return Task.FromResult(new PriceDataReply
+
+        if (period is not null)
         {
-            PriceData       = { data.PriceData },
-            Timestamps      = { timestamps },
-            Currency        = data.Currency,
-            MeasureUnit     = data.MeasureUnit,
-            TimeResolution  = data.Resolution
-        });
+            return Task.FromResult(new PriceDataReply
+            {
+                PriceData = { period.PriceData },
+                //Timestamps      = { timestamps },
+                Currency = data.Currency ?? "No Currency Set",
+                MeasureUnit = data.MeasureUnit ?? "No Measure Unit Set",
+                TimeResolution = period.Resolution ?? "No Resultion Set"
+            });
+        }
+        else
+        {
+            return Task.FromResult(new PriceDataReply
+            {
+                PriceData = {double.NaN},
+                //Timestamps      = { timestamps },
+                Currency = data.Currency,
+                MeasureUnit = data.MeasureUnit,
+                TimeResolution = "No Period Available"
+            });
+        }
+        
     }
 }

@@ -17,21 +17,21 @@ namespace powerprice_cs_server
         public static readonly string NO5 = "10Y1001A1001A48H";  // NO5 Western Norway
     }
 
-    public struct Options
+    public struct PriceDataOptions
     {
         public string   DocumentType { set; get; } = DocumentTypes.A44;
         public string   Zone { set; get; } = Zones.NO4;
         public DateOnly Date { set; get; } = DateOnly.FromDateTime(DateTime.Now);
 
-        public Options(DateOnly date, string documentType, string zone)
+        public PriceDataOptions(DateOnly date, string documentType, string zone)
         {
             DocumentType = documentType;
             Zone = zone;
             Date = date;
         }
 
-        public Options(DateOnly date, string documentType)   : this(date, documentType,     Zones.NO4) { }
-        public Options(DateOnly date)                        : this(date, DocumentTypes.A44, Zones.NO4) { }
+        public PriceDataOptions(DateOnly date, string documentType)   : this(date, documentType,     Zones.NO4) { }
+        public PriceDataOptions(DateOnly date)                        : this(date, DocumentTypes.A44, Zones.NO4) { }
     }
 
     internal static class URLBuilder
@@ -89,7 +89,7 @@ namespace powerprice_cs_server
 	{
         private static readonly HttpClient _httpClient = new();
         private readonly string _entsoeapi_key;
-        public Options _options { get; set; } = new Options();
+        public PriceDataOptions Options { get; set; } = new();
 
         public EntsoEPriceDataBroker(string entsoeapi_key)
 		{
@@ -106,14 +106,13 @@ namespace powerprice_cs_server
         /// Pulls data for the given DateOnly date
         /// </summary>
         /// <returns>IEntsoEData Containing the data pulled from Entso-E</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public IEntsoEData GetPriceData(DateOnly date)
+        public EntsoEData? GetPriceData(DateOnly date)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
-                { URLBuilder.Headers.documentTypeID, _options.DocumentType },
-                { URLBuilder.Headers.inDomainID, _options.Zone },
-                { URLBuilder.Headers.outDomainID, _options.Zone },
+                { URLBuilder.Headers.documentTypeID, Options.DocumentType },
+                { URLBuilder.Headers.inDomainID, Options.Zone },
+                { URLBuilder.Headers.outDomainID, Options.Zone },
                 { URLBuilder.Headers.periodStartID, date.ToString("yyyyMMdd") + "0000" },
                 { URLBuilder.Headers.periodEndID, date.ToString("yyyyMMdd") + "2200" }
             };
@@ -124,20 +123,42 @@ namespace powerprice_cs_server
                 Console.Write(res.Result.ToString());
             }
 
-            var dummyData = new EntsoEPriceData();
-            dummyData.PriceData = new List<double>{ 9,8,7,6,5,4,3,2,1};
-            dummyData.Timestamps = new List<DateTime> { DateTime.Now, DateTime.Now.AddDays(1) };
-            dummyData.Currency = "EUR";
-            //dummyData.MeasureUnit = "MWH"; // Don't include to see how null is handled
-            dummyData.TimeResolution = "PT60M";
-            dummyData.RawData = res.Result.ToString();
+            EntsoEData? priceData = null;
+            if (res.Result.ToString() is not null)
+            {
+                priceData = EntsoEPriceDataXMLParser.ParsePriceData(res.Result.ToString());
+            }
 
-            return dummyData;
+            return priceData;
+            
+
+            //// Assemble some dummy data
+            //var dummyData = new EntsoEPriceData
+            //{
+            //    CreatedDateTime = DateTime.UtcNow,
+            //    Type = "A44"
+            //};
+
+            //var period = new EntsoEPriceDataPeriod
+            //{
+            //    TimeInterval = new(DateTime.UtcNow, DateTime.UtcNow.AddDays(1)),
+            //    Resolution = "PT60M",
+            //    PriceData = new List<double> { 9, 8, 7, 6, 5, 4, 3, 2, 1 }                
+            //};
+            //dummyData.AddPeriod(period);
+
+            ////dummyData.MeasureUnit = "MWH"; // Don't include to see how null is handled
+            //dummyData.Currency = "EUR";
+            //dummyData.CurveType = "A01";
+
+            //dummyData.RawData = res.Result.ToString();
+
+            //return dummyData;
         }
 
-        public IEntsoEData GetPriceData(DateOnly date, Options options)
+        public EntsoEData? GetPriceData(DateOnly date, PriceDataOptions options)
         {
-            _options = options;
+            Options = options;
             return GetPriceData(date);
         }
     }

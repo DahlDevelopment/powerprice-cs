@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using powerprice_cs_server;
 
@@ -26,6 +27,7 @@ using powerprice_cs_server;
 //var filePath = "rawdata.xml";
 //File.WriteAllText(filePath, data.RawData);
 
+var a = 1;
 // ---------- GET DATA END ----------
 // ----------------------------------
 
@@ -36,7 +38,8 @@ xmlDoc.Load("rawdata.xml");
 // when searching it. Without that namespace reference
 // nothing is found using LINQ XML.
 // https://stackoverflow.com/a/46397001
-XElement root = XElement.Load("rawdata.xml");
+var xmldata = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText("rawdata.xml")));
+XElement root = XElement.Load(xmldata);
 var timeSeries = root.Descendants(root.Name.Namespace + "TimeSeries");
 
 var values = from point in timeSeries.Descendants(root.Name.Namespace + "Point")
@@ -45,8 +48,26 @@ var values = from point in timeSeries.Descendants(root.Name.Namespace + "Point")
 //IEnumerable<double> values = from val in root.Descendants(root.Name.Namespace + "Point")
 //                             select (double)val.Element("price.amount");
 
+EntsoEPriceData priceData = new();
+priceData.TimeInterval = ParsePriceDataTimeInterval(root);
 
-//var vals = values.ToList();
-var a = 1;
-//from item in purchaseOrder.Descendants("Item")
-//select (string)item.Attribute("PartNumber");
+var b = 1;
+
+
+
+Tuple<DateTime, DateTime> ParsePriceDataTimeInterval(in XElement root)
+{
+    var xmlNamespace = root.Name.Namespace;
+    var timeInterval = root.Descendants(xmlNamespace + "period.timeInterval");
+
+    DateTime GetTimeIntervalDT(string period)
+    {
+        var timeIntervalPeriod = timeInterval.Elements(xmlNamespace + period).First().Value;
+        return DateTime.Parse(timeIntervalPeriod).ToUniversalTime();
+    }
+
+    var timeIntervalStart = GetTimeIntervalDT("start");
+    var timeIntervalEnd = GetTimeIntervalDT("end");
+
+    return new Tuple<DateTime, DateTime> (timeIntervalStart, timeIntervalEnd);
+}
