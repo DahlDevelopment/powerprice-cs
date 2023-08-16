@@ -17,6 +17,7 @@ message PriceDataReply {
     string measureUnit = 4;
     string timeResolution = 5;
     string businessType = 6;
+    string mRID = 7;
 }
 
 message PriceDataRequest {

@@ -103,12 +103,22 @@ namespace powerprice_cs_server
         {
             var xmlNamespace = timeSeriesRoot.Name.Namespace;
 
-            // Business Type
-            var tmpBusinessType = timeSeriesRoot.Element(xmlNamespace + "businessType");
-            if (tmpBusinessType is not null)
+            string? parseXmlStringElement(XNamespace xnamespace, XElement root, string ID)
             {
-                timeSeries.BusinessType = tmpBusinessType.Value.ToString();
+                string? ret = null;
+                var tmp = root.Element(xnamespace + ID);
+                if(tmp is not null)
+                {
+                    ret = tmp.Value.ToString();
+                }
+
+                return ret;
             }
+            
+            timeSeries.MRID = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "mRID");
+            timeSeries.BusinessType = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "businessType");
+            timeSeries.Currency = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "currency_Unit.name");
+            timeSeries.MeasureUnit = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "price_Measure_Unit.name");
 
             //var xmlNamespace = root.Name.Namespace;
             //var timeSeries = root.Descendants(xmlNamespace + "TimeSeries");
