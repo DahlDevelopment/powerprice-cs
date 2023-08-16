@@ -1,19 +1,7 @@
 ﻿namespace powerprice_cs_server
 {
     using PriceDataPeriods = List<EntsoEPriceDataPeriod?>;
-
-    public struct TimeInterval
-    {
-        public DateTime Start { set; get; }
-        public DateTime End { set; get; }
-
-        public TimeInterval(DateTime start, DateTime end)
-        {
-            Start = start;
-            End = end;
-        }
-    }
-
+    
     public class EntsoEPriceData : EntsoEData
     {
         public new EntsoEPriceDataTimeSeries TimeSeries { set; get; } = new();

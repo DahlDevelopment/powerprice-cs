@@ -16,23 +16,51 @@ namespace powerprice_cs_server
 
 			var xmlStream = new MemoryStream(Encoding.UTF8.GetBytes(rawData));
 			EntsoEPriceData priceData = new();
-            EntsoEPriceDataPeriod period = new();
-            priceData.AddPeriod(period);            
 
             XElement root = XElement.Load(xmlStream);
-            //var xmlNamespace = root.Name.Namespace;
+            var xmlNamespace = root.Name.Namespace;
 
-            period.PriceData = ParsePriceDataValues(root);
+            var xmlTimeSeriesRoot = root.Descendants(xmlNamespace + "TimeSeries").First();
+            if (xmlTimeSeriesRoot is not null)
+            {
+                priceData.TimeSeries = ParsePriceDataTimeSeries(xmlTimeSeriesRoot);
+            }
 
             return priceData;
 		}
+
+        static internal EntsoEPriceDataTimeSeries ParsePriceDataTimeSeries(XElement timeSeriesRoot)
+        {
+            EntsoEPriceDataTimeSeries timeSeries = new();
+
+            var xmlNamespace = timeSeriesRoot.Name.Namespace;
+                
+
+            foreach(var xmlPeriod in timeSeriesRoot.Descendants(xmlNamespace + "Period"))
+            {
+                timeSeries.Periods.Add(ParsePriceDataPeriod(xmlPeriod));            
+            }
+
+            ParsePriceDataTimeSeriesMeta(timeSeriesRoot, timeSeries);
+
+            return timeSeries;
+        }        
+
+        static internal EntsoEPriceDataPeriod ParsePriceDataPeriod(XElement periodRoot)
+        {
+            return new()
+            {
+                TimeInterval = ParsePriceDataPeriodTimeInterval(periodRoot),
+                Resolution = ParsePriceDataPeriodResolution(periodRoot),
+                PriceData = ParsePriceDataValues(periodRoot)
+            };
+        }
 
 		static internal List<double> ParsePriceDataValues(XElement root)
 		{
             var xmlNamespace = root.Name.Namespace;
 
-            var timeSeries = root.Descendants(xmlNamespace + "TimeSeries");
-            var points = timeSeries.Descendants(xmlNamespace + "Point");
+            var points = root.Descendants(xmlNamespace + "Point");
 
             List<double> priceDataValues = new();
             foreach (var point in points)
@@ -48,23 +76,55 @@ namespace powerprice_cs_server
 			return priceDataValues;
         }
 
-        //static internal void ParsePriceDataTimeSeriesMeta(in XElement root, out EntsoEPriceData priceData)
-        //{
-        //    var xmlNamespace = root.Name.Namespace;
-        //    var timeSeries = root.Descendants(xmlNamespace + "TimeSeries");
+        static internal TimeInterval ParsePriceDataPeriodTimeInterval(in XElement periodRoot)
+        {
+            var xmlNamespace = periodRoot.Name.Namespace;
+            var timeInterval = periodRoot.Descendants(xmlNamespace + "timeInterval");
 
-        //    var period = timeSeries.Descendants(xmlNamespace + "Period");
-        //    var timeInterval = period.Descendants(xmlNamespace + "timeInterval");
+            DateTime GetTimeIntervalDT(string period)
+            {
+                var timeIntervalPeriod = timeInterval.Elements(xmlNamespace + period).First().Value;
+                return DateTime.Parse(timeIntervalPeriod).ToUniversalTime();
+            }
 
-        //    var timeIntervalStart = timeInterval.Elements(xmlNamespace + "start");
-        //    var timeIntervalEnd = timeInterval.Elements(xmlNamespace + "end");
+            var timeIntervalStart = GetTimeIntervalDT("start");
+            var timeIntervalEnd = GetTimeIntervalDT("end");
 
-        //    priceData.TimeInterval.Start = DateTime.FromFileTimeUtc(timeIntervalStart.First().Value.ToString());
-        //    priceData.TimeInterval.End = timeIntervalEnd;
+            return new TimeInterval(timeIntervalStart, timeIntervalEnd);
+        }
+
+        static internal string ParsePriceDataPeriodResolution(in XElement periodRoot)
+        {
+            var xmlNamespace = periodRoot.Name.Namespace;
+            return periodRoot.Descendants(xmlNamespace + "resolution").First().Value;
+        }
+
+        static internal void ParsePriceDataTimeSeriesMeta(in XElement timeSeriesRoot, EntsoEPriceDataTimeSeries timeSeries)
+        {
+            var xmlNamespace = timeSeriesRoot.Name.Namespace;
+
+            // Business Type
+            var tmpBusinessType = timeSeriesRoot.Element(xmlNamespace + "businessType");
+            if (tmpBusinessType is not null)
+            {
+                timeSeries.BusinessType = tmpBusinessType.Value.ToString();
+            }
+
+            //var xmlNamespace = root.Name.Namespace;
+            //var timeSeries = root.Descendants(xmlNamespace + "TimeSeries");
+
+            //var period = timeSeries.Descendants(xmlNamespace + "Period");
+            //var timeInterval = period.Descendants(xmlNamespace + "period.timeInterval");
+
+            //var timeIntervalStart = timeInterval.Elements(xmlNamespace + "start");
+            //var timeIntervalEnd = timeInterval.Elements(xmlNamespace + "end");
+
+            //priceData.TimeInterval.Start = DateTime.FromFileTimeUtc(timeIntervalStart.First().Value.ToString());
+            //priceData.TimeInterval.End = timeIntervalEnd;
 
 
 
-        //}
+        }
 
     }
 }

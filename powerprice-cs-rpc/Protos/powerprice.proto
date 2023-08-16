@@ -15,7 +15,8 @@ message PriceDataReply {
     repeated google.protobuf.Timestamp timestamps = 2;
     string currency = 3;
     string measureUnit = 4;
-    string timeResolution = 5;    
+    string timeResolution = 5;
+    string businessType = 6;
 }
 
 message PriceDataRequest {

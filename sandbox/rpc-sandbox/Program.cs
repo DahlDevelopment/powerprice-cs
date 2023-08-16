@@ -13,6 +13,7 @@ Console.WriteLine("Price Data: " + reply.PriceData);
 Console.WriteLine("Currency: " + reply.Currency);
 Console.WriteLine("MeasureUnit: " + reply.MeasureUnit);
 Console.WriteLine("TimeResolution: " + reply.TimeResolution);
+Console.WriteLine("BusinessType: " + reply.BusinessType);
 Console.WriteLine("Press any key to exit...");
 
 

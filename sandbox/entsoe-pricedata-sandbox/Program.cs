@@ -55,7 +55,7 @@ var b = 1;
 
 
 
-Tuple<DateTime, DateTime> ParsePriceDataTimeInterval(in XElement root)
+TimeInterval ParsePriceDataTimeInterval(in XElement root)
 {
     var xmlNamespace = root.Name.Namespace;
     var timeInterval = root.Descendants(xmlNamespace + "period.timeInterval");
@@ -69,5 +69,23 @@ Tuple<DateTime, DateTime> ParsePriceDataTimeInterval(in XElement root)
     var timeIntervalStart = GetTimeIntervalDT("start");
     var timeIntervalEnd = GetTimeIntervalDT("end");
 
-    return new Tuple<DateTime, DateTime> (timeIntervalStart, timeIntervalEnd);
+    return new TimeInterval(timeIntervalStart, timeIntervalEnd);
 }
+
+//static void ParsePriceDataTimeSeriesMeta(in XElement root, EntsoEPriceData priceData)
+//{
+//    var xmlNamespace = root.Name.Namespace;
+//    var timeSeries = root.Descendants(xmlNamespace + "TimeSeries");
+
+//    var period = timeSeries.Descendants(xmlNamespace + "Period");
+//    var timeInterval = period.Descendants(xmlNamespace + "timeInterval");
+
+//    var timeIntervalStart = timeInterval.Elements(xmlNamespace + "start");
+//    var timeIntervalEnd = timeInterval.Elements(xmlNamespace + "end");
+
+//    priceData.TimeInterval.Start = DateTime.FromFileTimeUtc(timeIntervalStart.First().Value.ToString());
+//    priceData.TimeInterval.End = timeIntervalEnd;
+
+
+
+//}
