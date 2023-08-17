@@ -130,30 +130,6 @@ namespace powerprice_cs_server
             }
 
             return priceData;
-            
-
-            //// Assemble some dummy data
-            //var dummyData = new EntsoEPriceData
-            //{
-            //    CreatedDateTime = DateTime.UtcNow,
-            //    Type = "A44"
-            //};
-
-            //var period = new EntsoEPriceDataPeriod
-            //{
-            //    TimeInterval = new(DateTime.UtcNow, DateTime.UtcNow.AddDays(1)),
-            //    Resolution = "PT60M",
-            //    PriceData = new List<double> { 9, 8, 7, 6, 5, 4, 3, 2, 1 }                
-            //};
-            //dummyData.AddPeriod(period);
-
-            ////dummyData.MeasureUnit = "MWH"; // Don't include to see how null is handled
-            //dummyData.Currency = "EUR";
-            //dummyData.CurveType = "A01";
-
-            //dummyData.RawData = res.Result.ToString();
-
-            //return dummyData;
         }
 
         public EntsoEData? GetPriceData(DateOnly date, PriceDataOptions options)

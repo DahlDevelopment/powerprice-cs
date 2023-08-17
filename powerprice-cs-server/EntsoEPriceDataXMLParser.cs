@@ -41,10 +41,34 @@ namespace powerprice_cs_server
                 timeSeries.Periods.Add(ParsePriceDataPeriod(xmlPeriod));            
             }
 
-            ParsePriceDataTimeSeriesMeta(timeSeriesRoot, timeSeries);
+            ParsePriceDataTimeSeriesMeta(timeSeriesRoot, ref timeSeries);
 
             return timeSeries;
-        }        
+        }
+
+        static internal void ParsePriceDataTimeSeriesMeta(in XElement timeSeriesRoot, ref EntsoEPriceDataTimeSeries timeSeries)
+        {
+            var xmlNamespace = timeSeriesRoot.Name.Namespace;
+
+            static string? ParseXmlStringElement(XNamespace xnamespace, XElement root, string ID)
+            {
+                string? ret = null;
+                var tmp = root.Element(xnamespace + ID);
+                if (tmp is not null)
+                {
+                    ret = tmp.Value.ToString();
+                }
+
+                return ret;
+            }
+
+            timeSeries.MRID = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "mRID");
+            timeSeries.BusinessType = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "businessType");
+            timeSeries.Currency = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "currency_Unit.name");
+            timeSeries.MeasureUnit = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "price_Measure_Unit.name");
+            timeSeries.CurveType = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "curveType");
+
+        }
 
         static internal EntsoEPriceDataPeriod ParsePriceDataPeriod(XElement periodRoot)
         {
@@ -97,30 +121,6 @@ namespace powerprice_cs_server
         {
             var xmlNamespace = periodRoot.Name.Namespace;
             return periodRoot.Descendants(xmlNamespace + "resolution").First().Value;
-        }
-
-        static internal void ParsePriceDataTimeSeriesMeta(in XElement timeSeriesRoot, EntsoEPriceDataTimeSeries timeSeries)
-        {
-            var xmlNamespace = timeSeriesRoot.Name.Namespace;
-
-            string? parseXmlStringElement(XNamespace xnamespace, XElement root, string ID)
-            {
-                string? ret = null;
-                var tmp = root.Element(xnamespace + ID);
-                if(tmp is not null)
-                {
-                    ret = tmp.Value.ToString();
-                }
-
-                return ret;
-            }
-            
-            timeSeries.MRID = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "mRID");
-            timeSeries.BusinessType = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "businessType");
-            timeSeries.Currency = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "currency_Unit.name");
-            timeSeries.MeasureUnit = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "price_Measure_Unit.name");
-            timeSeries.CurveType = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "curveType");
-
         }
 
     }
