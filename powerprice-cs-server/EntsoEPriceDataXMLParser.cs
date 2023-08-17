@@ -119,20 +119,7 @@ namespace powerprice_cs_server
             timeSeries.BusinessType = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "businessType");
             timeSeries.Currency = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "currency_Unit.name");
             timeSeries.MeasureUnit = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "price_Measure_Unit.name");
-
-            //var xmlNamespace = root.Name.Namespace;
-            //var timeSeries = root.Descendants(xmlNamespace + "TimeSeries");
-
-            //var period = timeSeries.Descendants(xmlNamespace + "Period");
-            //var timeInterval = period.Descendants(xmlNamespace + "period.timeInterval");
-
-            //var timeIntervalStart = timeInterval.Elements(xmlNamespace + "start");
-            //var timeIntervalEnd = timeInterval.Elements(xmlNamespace + "end");
-
-            //priceData.TimeInterval.Start = DateTime.FromFileTimeUtc(timeIntervalStart.First().Value.ToString());
-            //priceData.TimeInterval.End = timeIntervalEnd;
-
-
+            timeSeries.CurveType = parseXmlStringElement(xmlNamespace, timeSeriesRoot, "curveType");
 
         }
 

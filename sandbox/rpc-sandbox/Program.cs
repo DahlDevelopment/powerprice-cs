@@ -15,6 +15,7 @@ Console.WriteLine("MeasureUnit: " + reply.MeasureUnit);
 Console.WriteLine("TimeResolution: " + reply.TimeResolution);
 Console.WriteLine("TimeSeries BusinessType: " + reply.BusinessType);
 Console.WriteLine("TimeSeries mRID: " + reply.MRID);
+Console.WriteLine("TimeSeries CurveType: " + reply.CurveType);
 Console.WriteLine("Press any key to exit...");
 
 

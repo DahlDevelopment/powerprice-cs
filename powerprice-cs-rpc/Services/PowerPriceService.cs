@@ -53,7 +53,8 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
                 MeasureUnit = data.MeasureUnit ?? "No Measure Unit Set",
                 TimeResolution = period.Resolution ?? "No Resultion Set",
                 BusinessType = data.TimeSeries.BusinessType ?? "No Business Type Set",
-                MRID = data.TimeSeries.MRID ?? "No mRID Set"
+                MRID = data.TimeSeries.MRID ?? "No mRID Set",
+                CurveType = data.TimeSeries.CurveType ?? "No Curve Type Set"
             });
         }
         else
@@ -66,7 +67,8 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
                 MeasureUnit = data.MeasureUnit,
                 TimeResolution = "No Period Available",
                 BusinessType = "No Business Type Set",
-                MRID = "No mRID Set"
+                MRID = "No mRID Set",
+                CurveType = "No Curve Type Set"
             });
         }
         

@@ -18,6 +18,7 @@ message PriceDataReply {
     string timeResolution = 5;
     string businessType = 6;
     string mRID = 7;
+    string curveType = 8;
 }
 
 message PriceDataRequest {
