@@ -11,14 +11,35 @@ service PriceDataService {
 }
 
 message PriceDataReply {
-    repeated double priceData = 1;
-    repeated google.protobuf.Timestamp timestamps = 2;
-    string currency = 3;
-    string measureUnit = 4;
-    string timeResolution = 5;
-    string businessType = 6;
-    string mRID = 7;
-    string curveType = 8;
+    MarketDocumentMeta marketDocumentMeta = 1;
+    PriceDataTimeSeries priceDataTimeSeries = 2;
+}
+
+message PriceDataTimeSeries {
+    string mRID = 1;
+    string businessType = 2;
+    string measureUnit = 3;
+    string currency = 4;
+    string curveType = 5;
+    repeated PriceDataPeriod periods = 6;
+}
+
+message PriceDataPeriod {
+    RpcTimeInterval periodTimeInterval = 1;
+    string timeResolution = 2;
+    repeated double priceData = 3;
+}
+
+message MarketDocumentMeta {
+    string mRID = 1;
+    string revisionNumber = 2;
+    string type = 3;
+    RpcTimeInterval marketDocumentTimeInterval = 4;
+}
+
+message RpcTimeInterval {
+   google.protobuf.Timestamp start = 1;
+   google.protobuf.Timestamp end = 2;
 }
 
 message PriceDataRequest {

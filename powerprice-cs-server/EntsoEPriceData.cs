@@ -86,7 +86,7 @@
 
     public class EntsoEPriceDataPeriod  
     {       
-        public TimeInterval? TimeInterval { set; get; }
+        public TimeInterval? Tinterval { set; get; }
         public string? Resolution { set; get; } // e.g. PT60M
         public List<double>? PriceData { set; get; }
     }

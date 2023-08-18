@@ -16,10 +16,12 @@ namespace powerprice_cs_server
 
     public class EntsoEData
 	{
-		public EntsoETimeSeries TimeSeries { set; get; } = new();
-		public string? Type { set; get; }
+        public string? MRID { set; get; }
+        public string? RevisonNumber { set; get; }
+        public string? Type { set; get; }
+        public EntsoETimeSeries TimeSeries { set; get; } = new();
 		public DateTime? CreatedDateTime { set; get; }		
-		public TimeInterval? TimeInterval { set; get; }
+		public TimeInterval? EntsoETimeInteval{ set; get; }
 	}
 
 	public class EntsoETimeSeries

@@ -49,7 +49,7 @@ var values = from point in timeSeries.Descendants(root.Name.Namespace + "Point")
 //                             select (double)val.Element("price.amount");
 
 EntsoEPriceData priceData = new();
-priceData.TimeInterval = ParsePriceDataTimeInterval(root);
+priceData.EntsoETimeInteval = ParsePriceDataTimeInterval(root);
 
 var b = 1;
 

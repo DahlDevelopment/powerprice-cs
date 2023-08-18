@@ -28,8 +28,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
         };
 
         var data = PowerPriceServer.GetPriceData(broker, DateOnly.FromDateTime(DateTime.Today), opts) as EntsoEPriceData;
-        EntsoEPriceDataPeriod? period = data!.Periods.First();
-        
+
         // for-loop to construct the correct timestamp objects
         //List<Google.Protobuf.WellKnownTypes.Timestamp> timestamps = new();
         //foreach(var timestamp in data.TimeStamps)
@@ -43,34 +42,68 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
         //    .ToList();
 
 
-        if (period is not null)
+        if (data is not null)
         {
-            return Task.FromResult(new PriceDataReply
+            var timeSeries = data.TimeSeries;
+            var period = data.Periods.First();
+            
+            if (timeSeries is not null && period is not null)
             {
-                PriceData = { period.PriceData },
-                //Timestamps      = { timestamps },
-                Currency = data.Currency ?? "No Currency Set",
-                MeasureUnit = data.MeasureUnit ?? "No Measure Unit Set",
-                TimeResolution = period.Resolution ?? "No Resultion Set",
-                BusinessType = data.TimeSeries.BusinessType ?? "No Business Type Set",
-                MRID = data.TimeSeries.MRID ?? "No mRID Set",
-                CurveType = data.TimeSeries.CurveType ?? "No Curve Type Set"
-            });
+
+                var priceperiod = new PriceDataPeriod
+                {
+                    PriceData = { period.PriceData },
+                    TimeInterval = new TimeInterval
+                    {
+                        Start = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(period.Tinterval.Value.Start),
+                        End = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(period.Tinterval.Value.End)
+                    },
+                    TimeResolution = period.Resolution
+                };
+
+                var priceDataTimeseries = new PriceDataTimeSeries
+                {
+                    MRID = data.TimeSeries.MRID,
+                    BusinessType = data.TimeSeries.BusinessType,
+                    Currency = data.TimeSeries.Currency,
+                    CurveType = timeSeries.CurveType,
+                    MeasureUnit = timeSeries.MeasureUnit,
+                    Periods = { priceperiod }
+                };
+
+                var marketMeta = new MarketDocumentMeta
+                {
+                    MRID = data.MRID,
+                    RevisionNumber = data.RevisonNumber,
+                    TimeInterval = new TimeInterval
+                    {
+                        Start = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.EntsoETimeInteval!.Value.Start),
+                        End = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.EntsoETimeInteval!.Value.End)
+                    },
+                    Type = data.Type
+                };
+
+                return Task.FromResult(new PriceDataReply
+                {
+                    MarketDocumentMeta = marketMeta,
+                    PriceDataTimeSeries = priceDataTimeseries
+                
+                });
+            }
+            else
+            {
+                return Task.FromResult(new PriceDataReply
+                {
+                });
+            }
         }
         else
         {
             return Task.FromResult(new PriceDataReply
             {
-                PriceData = {double.NaN},
-                //Timestamps      = { timestamps },
-                Currency = data.Currency,
-                MeasureUnit = data.MeasureUnit,
-                TimeResolution = "No Period Available",
-                BusinessType = "No Business Type Set",
-                MRID = "No mRID Set",
-                CurveType = "No Curve Type Set"
             });
         }
-        
+
     }
+    
 }

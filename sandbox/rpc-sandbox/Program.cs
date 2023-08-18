@@ -8,14 +8,43 @@ var reply = client.GetPowerPriceData(DateOnly.FromDateTime(DateTime.UtcNow));
 //Console.WriteLine("Greeting: " + reply.Message);
 
 //var reply = await client.GetPriceDataAsync(new PriceDataRequest { Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTime.UtcNow) });
-Console.WriteLine("Price Data: " + reply.PriceData);
-//Console.WriteLine("Timestamps: " + reply.Timestamps);
-Console.WriteLine("Currency: " + reply.Currency);
-Console.WriteLine("MeasureUnit: " + reply.MeasureUnit);
-Console.WriteLine("TimeResolution: " + reply.TimeResolution);
-Console.WriteLine("TimeSeries BusinessType: " + reply.BusinessType);
-Console.WriteLine("TimeSeries mRID: " + reply.MRID);
-Console.WriteLine("TimeSeries CurveType: " + reply.CurveType);
-Console.WriteLine("Press any key to exit...");
+var marketDocumentMeta = reply.MarketDocumentMeta;
+var timeSeries = reply.PriceDataTimeSeries;
+var period = timeSeries.Periods.First();
+
+if (marketDocumentMeta is not null &&  timeSeries is not null && period is not null)
+{
+    Console.WriteLine("MarketDocument mRID: " +  marketDocumentMeta.MRID);
+    Console.WriteLine("MarketDocument revisionNumber: " + marketDocumentMeta.RevisionNumber);
+    Console.WriteLine("MarketDocument type: " + marketDocumentMeta.Type);
+    Console.WriteLine("MarketDocument time interval start: " + marketDocumentMeta.MarketDocumentTimeInterval.Start.ToDateTime().ToString());
+    Console.WriteLine("MarketDocument time interval end: " + marketDocumentMeta.MarketDocumentTimeInterval.End.ToDateTime().ToString());
+
+    Console.WriteLine("TimeSeries mRID: " + timeSeries.MRID);
+    Console.WriteLine("TimeSeries businesstype: " + timeSeries.BusinessType);
+    Console.WriteLine("TimeSeries measure unit: " + timeSeries.MeasureUnit);
+    Console.WriteLine("TimeSeries currency: " + timeSeries.Currency);
+    Console.WriteLine("TimeSeries curve type: " + timeSeries.CurveType);
+    Console.WriteLine("TimeSeries # of periods: " + timeSeries.Periods.Count().ToString());
+
+    Console.WriteLine("");
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("First Period");
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Period time interval start: " + period.PeriodTimeInterval.Start.ToDateTime().ToString());
+    Console.WriteLine("Period time interval end: " + period.PeriodTimeInterval.End.ToDateTime().ToString());
+    Console.WriteLine("Period time resolution: " + period.TimeResolution);
+    Console.WriteLine("Period price data: " + period.PriceData);
+
+    //Console.WriteLine("Price Data: " + period.PriceData);
+    ////Console.WriteLine("Timestamps: " + reply.Timestamps);
+    //Console.WriteLine("Currency: " + timeSeries.Currency);
+    //Console.WriteLine("MeasureUnit: " + timeSeries.MeasureUnit);
+    //Console.WriteLine("TimeResolution: " + period.TimeResolution);
+    //Console.WriteLine("TimeSeries BusinessType: " + timeSeries.BusinessType);
+    //Console.WriteLine("TimeSeries mRID: " + timeSeries.MRID);
+    //Console.WriteLine("TimeSeries CurveType: " + timeSeries.CurveType);
+    //Console.WriteLine("Press any key to exit...");
+}
 
 
