@@ -61,6 +61,7 @@ namespace powerprice_cs_server
             timeSeries.Currency = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "currency_Unit.name");
             timeSeries.MeasureUnit = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "price_Measure_Unit.name");
             timeSeries.CurveType = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "curveType");
+            timeSeries.Domain = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "in_Domain.mRID");
 
         }
 

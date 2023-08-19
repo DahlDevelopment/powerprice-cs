@@ -25,6 +25,7 @@ if (marketDocumentMeta is not null &&  timeSeries is not null && period is not n
     Console.WriteLine("TimeSeries measure unit: " + timeSeries.MeasureUnit);
     Console.WriteLine("TimeSeries currency: " + timeSeries.Currency);
     Console.WriteLine("TimeSeries curve type: " + timeSeries.CurveType);
+    Console.WriteLine("TimeSeries Domain: " + timeSeries.Domain);
     Console.WriteLine("TimeSeries # of periods: " + timeSeries.Periods.Count().ToString());
 
     Console.WriteLine("");

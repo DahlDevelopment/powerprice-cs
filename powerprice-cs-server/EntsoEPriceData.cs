@@ -81,6 +81,7 @@
 		public string? MeasureUnit	{ set; get; }	// e.g. MWH
 		public string? Currency		{ set; get; }   // e.g. EUR
 		public string? CurveType	{ set; get; }
+        public string? Domain       { set; get; }   // e.g. NO4
         public PriceDataPeriods Periods { set; get; } = new();
     }
 

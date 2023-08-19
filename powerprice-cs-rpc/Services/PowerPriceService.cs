@@ -68,6 +68,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
                     Currency = data.TimeSeries.Currency,
                     CurveType = timeSeries.CurveType,
                     MeasureUnit = timeSeries.MeasureUnit,
+                    Domain = timeSeries.Domain,
                     Periods = { priceperiod }
                 };
 

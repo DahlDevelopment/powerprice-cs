@@ -21,7 +21,8 @@ message PriceDataTimeSeries {
     string measureUnit = 3;
     string currency = 4;
     string curveType = 5;
-    repeated PriceDataPeriod periods = 6;
+    string domain = 6;
+    repeated PriceDataPeriod periods = 7;
 }
 
 message PriceDataPeriod {
