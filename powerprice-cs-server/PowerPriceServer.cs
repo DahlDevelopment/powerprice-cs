@@ -1,20 +1,16 @@
-﻿using System;
-namespace powerprice_cs_server
+﻿namespace powerprice_cs_server
 {
-	public class PowerPriceServer
+    public class PowerPriceServer
 	{
-		private IEntsoEBroker _broker;
 
-		public PowerPriceServer(IEntsoEBroker broker)
+		public PowerPriceServer()
 		{
-			_broker = broker;
 			Console.WriteLine("Server Initiated");
 		}
 
-		public IEntsoEData GetPriceData(DateOnly date, Options opts)
+		public static EntsoEData? GetPriceData(EntsoEPriceDataBroker broker, DateOnly date, PriceDataOptions opts)
 		{
-
-			return _broker.GetPriceData(date, opts);
+			return broker.GetPriceData(date, opts);
 		}
 	}
 }
