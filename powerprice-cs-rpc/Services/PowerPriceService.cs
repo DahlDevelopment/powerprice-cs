@@ -53,10 +53,10 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
                 var priceperiod = new PriceDataPeriod
                 {
                     PriceData = { period.PriceData },
-                    TimeInterval = new TimeInterval
+                    PeriodTimeInterval = new RpcTimeInterval
                     {
-                        Start = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(period.Tinterval.Value.Start),
-                        End = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(period.Tinterval.Value.End)
+                        Start = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(period.PeriodTimeInterval.Value.Start),
+                        End = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(period.PeriodTimeInterval.Value.End)
                     },
                     TimeResolution = period.Resolution
                 };
@@ -75,10 +75,10 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
                 {
                     MRID = data.MRID,
                     RevisionNumber = data.RevisonNumber,
-                    TimeInterval = new TimeInterval
+                    MarketDocumentTimeInterval = new RpcTimeInterval
                     {
-                        Start = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.EntsoETimeInteval!.Value.Start),
-                        End = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.EntsoETimeInteval!.Value.End)
+                        Start = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.MarketDocumentTimeInterval!.Value.Start),
+                        End = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.MarketDocumentTimeInterval!.Value.End)
                     },
                     Type = data.Type
                 };

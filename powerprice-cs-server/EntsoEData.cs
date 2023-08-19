@@ -21,7 +21,7 @@ namespace powerprice_cs_server
         public string? Type { set; get; }
         public EntsoETimeSeries TimeSeries { set; get; } = new();
 		public DateTime? CreatedDateTime { set; get; }		
-		public TimeInterval? EntsoETimeInteval{ set; get; }
+		public TimeInterval? MarketDocumentTimeInterval{ set; get; }
 	}
 
 	public class EntsoETimeSeries

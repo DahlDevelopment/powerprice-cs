@@ -36,15 +36,6 @@ if (marketDocumentMeta is not null &&  timeSeries is not null && period is not n
     Console.WriteLine("Period time resolution: " + period.TimeResolution);
     Console.WriteLine("Period price data: " + period.PriceData);
 
-    //Console.WriteLine("Price Data: " + period.PriceData);
-    ////Console.WriteLine("Timestamps: " + reply.Timestamps);
-    //Console.WriteLine("Currency: " + timeSeries.Currency);
-    //Console.WriteLine("MeasureUnit: " + timeSeries.MeasureUnit);
-    //Console.WriteLine("TimeResolution: " + period.TimeResolution);
-    //Console.WriteLine("TimeSeries BusinessType: " + timeSeries.BusinessType);
-    //Console.WriteLine("TimeSeries mRID: " + timeSeries.MRID);
-    //Console.WriteLine("TimeSeries CurveType: " + timeSeries.CurveType);
-    //Console.WriteLine("Press any key to exit...");
 }
 
 

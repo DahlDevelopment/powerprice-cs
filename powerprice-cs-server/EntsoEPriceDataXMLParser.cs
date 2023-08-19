@@ -7,7 +7,19 @@ namespace powerprice_cs_server
 {
     internal static class EntsoEPriceDataXMLParser
 	{
-		static public EntsoEPriceData ParsePriceData(string? rawData)
+        private static string? ParseXmlStringElement(XNamespace xnamespace, XElement root, string ID)
+        {
+            string? ret = null;
+            var tmp = root.Element(xnamespace + ID);
+            if (tmp is not null)
+            {
+                ret = tmp.Value.ToString();
+            }
+
+            return ret;
+        }
+
+        static public EntsoEPriceData ParsePriceData(string? rawData)
 		{
             if(rawData is null)
             {
@@ -37,7 +49,19 @@ namespace powerprice_cs_server
             priceData.MRID = ParseXmlStringElement(xmlNamespace, marketDocumentRoot, "mRID");
             priceData.RevisonNumber = ParseXmlStringElement(xmlNamespace, marketDocumentRoot, "revisionNumber");
             priceData.Type = ParseXmlStringElement(xmlNamespace, marketDocumentRoot, "type");
-            priceData.EntsoETimeInteval = ParsePriceDataPeriodTimeInterval(marketDocumentRoot, "timeInterval");
+            priceData.MarketDocumentTimeInterval = ParsePriceDataPeriodTimeInterval(marketDocumentRoot, "timeInterval");
+        }
+
+        static internal void ParsePriceDataTimeSeriesMeta(in XElement timeSeriesRoot, ref EntsoEPriceDataTimeSeries timeSeries)
+        {
+            var xmlNamespace = timeSeriesRoot.Name.Namespace;
+
+            timeSeries.MRID = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "mRID");
+            timeSeries.BusinessType = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "businessType");
+            timeSeries.Currency = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "currency_Unit.name");
+            timeSeries.MeasureUnit = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "price_Measure_Unit.name");
+            timeSeries.CurveType = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "curveType");
+
         }
 
         static internal EntsoEPriceDataTimeSeries ParsePriceDataTimeSeries(XElement timeSeriesRoot)
@@ -57,35 +81,11 @@ namespace powerprice_cs_server
             return timeSeries;
         }
 
-        static internal void ParsePriceDataTimeSeriesMeta(in XElement timeSeriesRoot, ref EntsoEPriceDataTimeSeries timeSeries)
-        {
-            var xmlNamespace = timeSeriesRoot.Name.Namespace;
-
-            timeSeries.MRID = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "mRID");
-            timeSeries.BusinessType = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "businessType");
-            timeSeries.Currency = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "currency_Unit.name");
-            timeSeries.MeasureUnit = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "price_Measure_Unit.name");
-            timeSeries.CurveType = ParseXmlStringElement(xmlNamespace, timeSeriesRoot, "curveType");
-
-        }
-
-        private static string? ParseXmlStringElement(XNamespace xnamespace, XElement root, string ID)
-        {
-            string? ret = null;
-            var tmp = root.Element(xnamespace + ID);
-            if (tmp is not null)
-            {
-                ret = tmp.Value.ToString();
-            }
-
-            return ret;
-        }
-
         static internal EntsoEPriceDataPeriod ParsePriceDataPeriod(XElement periodRoot)
         {
             return new()
             {
-                Tinterval = ParsePriceDataPeriodTimeInterval(periodRoot, "timeInterval"),
+                PeriodTimeInterval = ParsePriceDataPeriodTimeInterval(periodRoot, "timeInterval"),
                 Resolution = ParsePriceDataPeriodResolution(periodRoot),
                 PriceData = ParsePriceDataValues(periodRoot)
             };

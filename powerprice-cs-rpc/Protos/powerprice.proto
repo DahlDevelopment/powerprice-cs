@@ -25,7 +25,7 @@ message PriceDataTimeSeries {
 }
 
 message PriceDataPeriod {
-    TimeInterval timeInterval = 1;
+    RpcTimeInterval periodTimeInterval = 1;
     string timeResolution = 2;
     repeated double priceData = 3;
 }
@@ -34,10 +34,10 @@ message MarketDocumentMeta {
     string mRID = 1;
     string revisionNumber = 2;
     string type = 3;
-    TimeInterval timeInterval = 4;
+    RpcTimeInterval marketDocumentTimeInterval = 4;
 }
 
-message TimeInterval {
+message RpcTimeInterval {
    google.protobuf.Timestamp start = 1;
    google.protobuf.Timestamp end = 2;
 }
