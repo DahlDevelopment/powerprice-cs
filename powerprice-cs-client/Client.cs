@@ -17,7 +17,7 @@ namespace powerprice_cs_client
 
         public PriceDataReply GetPowerPriceData(DateOnly date)
         {
-            var client = new PriceData.PriceDataClient(_grpcChannel);
+            var client = new PriceDataService.PriceDataServiceClient(_grpcChannel);
             var priceDataReply = client.GetPriceData(new PriceDataRequest
             {
                 Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(date.ToDateTime(TimeOnly.Parse("00:00:00")))

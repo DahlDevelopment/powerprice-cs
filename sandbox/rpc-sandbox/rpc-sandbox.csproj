@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\powerprice-cs-client\powerprice-cs-client.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update=".entsoe_key_secret">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\powerprice-cs-client\powerprice-cs-client.csproj" />
   </ItemGroup>
 </Project>

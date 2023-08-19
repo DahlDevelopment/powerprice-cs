@@ -17,24 +17,24 @@ namespace powerprice_cs_server
         public static readonly string NO5 = "10Y1001A1001A48H";  // NO5 Western Norway
     }
 
-    public struct Options
+    public struct PriceDataOptions
     {
         public string   DocumentType { set; get; } = DocumentTypes.A44;
         public string   Zone { set; get; } = Zones.NO4;
         public DateOnly Date { set; get; } = DateOnly.FromDateTime(DateTime.Now);
 
-        public Options(DateOnly date, string documentType, string zone)
+        public PriceDataOptions(DateOnly date, string documentType, string zone)
         {
             DocumentType = documentType;
             Zone = zone;
             Date = date;
         }
 
-        public Options(DateOnly date, string documentType)   : this(date, documentType,     Zones.NO4) { }
-        public Options(DateOnly date)                        : this(date, DocumentTypes.A44, Zones.NO4) { }
+        public PriceDataOptions(DateOnly date, string documentType)   : this(date, documentType,     Zones.NO4) { }
+        public PriceDataOptions(DateOnly date)                        : this(date, DocumentTypes.A44, Zones.NO4) { }
     }
 
-    public static class URLBuilder
+    internal static class URLBuilder
     {
         public static class Headers
         {
@@ -49,7 +49,7 @@ namespace powerprice_cs_server
         }
     }
 
-    public static class RESTClient
+    internal static class RESTClient
     {
         private static readonly HttpClient _client = new();
 
@@ -79,25 +79,25 @@ namespace powerprice_cs_server
 
 
     /// <summary>
-    /// EntsoEBroker: 
+    /// EntsoEPriceDataBroker: 
     ///     Implements IEntsoEBroker using the Entso-E REST API.
     /// </summary>
     /// <remarks>
     ///     Helper classes and structs defined above.
     /// </remarks>
-    public class EntsoEBroker : IEntsoEBroker
+    public class EntsoEPriceDataBroker : IEntsoEBroker
 	{
         private static readonly HttpClient _httpClient = new();
         private readonly string _entsoeapi_key;
-        public Options _options { get; set; } = new Options();
+        public PriceDataOptions Options { get; set; } = new();
 
-        public EntsoEBroker(string entsoeapi_key)
+        public EntsoEPriceDataBroker(string entsoeapi_key)
 		{
             _entsoeapi_key = entsoeapi_key;
             Console.WriteLine("Key: " + _entsoeapi_key);
         }
 
-        ~EntsoEBroker()
+        ~EntsoEPriceDataBroker()
         {
             _httpClient.Dispose();
         }
@@ -106,14 +106,13 @@ namespace powerprice_cs_server
         /// Pulls data for the given DateOnly date
         /// </summary>
         /// <returns>IEntsoEData Containing the data pulled from Entso-E</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public IEntsoEData GetPriceData(DateOnly date)
+        public EntsoEData? GetPriceData(DateOnly date)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
-                { URLBuilder.Headers.documentTypeID, _options.DocumentType },
-                { URLBuilder.Headers.inDomainID, _options.Zone },
-                { URLBuilder.Headers.outDomainID, _options.Zone },
+                { URLBuilder.Headers.documentTypeID, Options.DocumentType },
+                { URLBuilder.Headers.inDomainID, Options.Zone },
+                { URLBuilder.Headers.outDomainID, Options.Zone },
                 { URLBuilder.Headers.periodStartID, date.ToString("yyyyMMdd") + "0000" },
                 { URLBuilder.Headers.periodEndID, date.ToString("yyyyMMdd") + "2200" }
             };
@@ -124,15 +123,18 @@ namespace powerprice_cs_server
                 Console.Write(res.Result.ToString());
             }
 
-            var dummyData = new EntsoEPriceData();
-            dummyData.Data = new List<double>{ 9,8,7,6,5,4,3,2,1};
+            EntsoEData? priceData = null;
+            if (res.Result.ToString() is not null)
+            {
+                priceData = EntsoEPriceDataXMLParser.ParsePriceData(res.Result.ToString());
+            }
 
-            return dummyData;
+            return priceData;
         }
 
-        public IEntsoEData GetPriceData(DateOnly date, Options options)
+        public EntsoEData? GetPriceData(DateOnly date, PriceDataOptions options)
         {
-            _options = options;
+            Options = options;
             return GetPriceData(date);
         }
     }
