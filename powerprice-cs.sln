@@ -29,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "entsoe-pricedata-sandbox", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpc-sandbox", "sandbox\rpc-sandbox\rpc-sandbox.csproj", "{FB83783B-9036-46C8-A99F-F6B1FD44679F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "powerprice-cs-rpc", "powerprice-cs-rpc\powerprice-cs-rpc.csproj", "{6A2A7F1A-056A-4D3A-A48E-88F046A46DC6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
