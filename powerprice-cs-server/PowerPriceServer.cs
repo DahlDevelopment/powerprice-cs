@@ -1,4 +1,6 @@
-﻿namespace powerprice_cs_server
+﻿using powerprice_cs_common;
+
+namespace powerprice_cs_server
 {
     public class PowerPriceServer
 	{
@@ -8,9 +10,9 @@
 			Console.WriteLine("Server Initiated");
 		}
 
-		public static EntsoEData? GetPriceData(EntsoEPriceDataBroker broker, DateOnly date, PriceDataOptions opts)
+		public static EntsoEData? GetPriceData(EntsoEPriceDataBroker broker, PriceDataOptions opts)
 		{
-			return broker.GetPriceData(date, opts);
+			return broker.GetPriceData(opts);
 		}
 	}
 }

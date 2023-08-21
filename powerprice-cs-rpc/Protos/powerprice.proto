@@ -44,5 +44,11 @@ message RpcTimeInterval {
 }
 
 message PriceDataRequest {
-    google.protobuf.Timestamp date = 1;
+    PriceDataRequestOptions requestOptions = 1;
+}
+
+message PriceDataRequestOptions {
+    string zone = 1;
+    google.protobuf.Timestamp date = 2;
+
 }

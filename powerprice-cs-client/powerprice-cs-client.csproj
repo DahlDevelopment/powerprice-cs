@@ -25,4 +25,7 @@
   <ItemGroup>
     <Protobuf Include="Protos\powerprice.proto" GrpcServices="Client" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\powerprice-cs-common\powerprice-cs-common.csproj" />
+  </ItemGroup>
 </Project>

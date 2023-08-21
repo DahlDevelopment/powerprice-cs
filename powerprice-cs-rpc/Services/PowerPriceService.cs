@@ -2,6 +2,7 @@
 using powerprice_cs_server;
 
 namespace powerprice_cs_rpc.Services;
+using powerprice_cs_common;
 
 public class PowerPriceService : PriceDataService.PriceDataServiceBase
 {
@@ -22,25 +23,12 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
 
         PriceDataOptions opts = new()
         {
-            Zone = Zones.NO4,
-            Date = DateOnly.FromDateTime(DateTime.Today),
+            Zone = request.RequestOptions.Zone,
+            Date = DateOnly.FromDateTime(request.RequestOptions.Date.ToDateTime()),
             DocumentType = DocumentTypes.A44
         };
 
-        var data = PowerPriceServer.GetPriceData(broker, DateOnly.FromDateTime(DateTime.Today), opts) as EntsoEPriceData;
-
-        // for-loop to construct the correct timestamp objects
-        //List<Google.Protobuf.WellKnownTypes.Timestamp> timestamps = new();
-        //foreach(var timestamp in data.TimeStamps)
-        //{
-        //    timestamps.Add(Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(timestamp));
-        //}
-
-        // testing lambda/linq
-        //var timestamps = data.Timestamps
-        //    .Select(x => Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(x.ToUniversalTime()))
-        //    .ToList();
-
+        var data = PowerPriceServer.GetPriceData(broker, opts) as EntsoEPriceData;
 
         if (data is not null)
         {

@@ -1,9 +1,10 @@
 ﻿using powerprice_cs_client;
+using powerprice_cs_common;
 
 // The port number must match the poert of the gRPC server
 var com = new TCPIPCom();
 var client = new Client(com);
-var reply = client.GetPowerPriceData(DateOnly.FromDateTime(DateTime.UtcNow));
+var reply = client.GetPowerPriceData(new PriceDataOptions(DateOnly.FromDateTime(DateTime.UtcNow), Zones.NO3));
 //var reply = await client.SayHelloAsync(new HelloRequest { Name = "GreeterClient" });
 //Console.WriteLine("Greeting: " + reply.Message);
 

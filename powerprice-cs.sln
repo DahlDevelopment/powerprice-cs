@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "entsoe-pricedata-sandbox", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpc-sandbox", "sandbox\rpc-sandbox\rpc-sandbox.csproj", "{FB83783B-9036-46C8-A99F-F6B1FD44679F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "powerprice-cs-common", "powerprice-cs-common\powerprice-cs-common.csproj", "{5CFADD85-21E9-403A-8659-C93EB1D45151}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{FB83783B-9036-46C8-A99F-F6B1FD44679F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB83783B-9036-46C8-A99F-F6B1FD44679F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB83783B-9036-46C8-A99F-F6B1FD44679F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CFADD85-21E9-403A-8659-C93EB1D45151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CFADD85-21E9-403A-8659-C93EB1D45151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CFADD85-21E9-403A-8659-C93EB1D45151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CFADD85-21E9-403A-8659-C93EB1D45151}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

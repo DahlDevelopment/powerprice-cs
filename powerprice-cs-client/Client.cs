@@ -1,13 +1,13 @@
 ﻿using Grpc.Net.Client;
 using powerprice_cs_rpc;
+using powerprice_cs_common;
 
 namespace powerprice_cs_client
 {
     public class Client
     {
         private readonly IComMethod _comMethod;
-        private readonly GrpcChannel _grpcChannel;
-
+        private readonly GrpcChannel _grpcChannel;        
 
         public Client(IComMethod comMethod)
         {
@@ -15,13 +15,19 @@ namespace powerprice_cs_client
             _grpcChannel = GrpcChannel.ForAddress("http://localhost:5288"); //TODO: Need to figure out how to set the correct address for remote hosts
         }
 
-        public PriceDataReply GetPowerPriceData(DateOnly date)
+        public PriceDataReply GetPowerPriceData(PriceDataOptions options)
         {
             var client = new PriceDataService.PriceDataServiceClient(_grpcChannel);
+
+
             var priceDataReply = client.GetPriceData(new PriceDataRequest
             {
-                Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(date.ToDateTime(TimeOnly.Parse("00:00:00")))
-            });
+                RequestOptions = new PriceDataRequestOptions
+                {
+                    Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(options.Date.ToDateTime(TimeOnly.Parse("00:00:00"))),
+                    Zone = options.Zone
+                }
+        });
 
             return priceDataReply;
         }
