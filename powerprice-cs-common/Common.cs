@@ -18,10 +18,10 @@ public static class Zones
 
 public struct PriceDataOptions
 {
-    public string DocumentType { set; get; } = DocumentTypes.A44;
+    public static readonly string DefaultDocumentTypePriceData = DocumentTypes.A44;
+    public string DocumentType { set; get; }
     public string Zone { set; get; }
     public DateOnly Date { set; get; }
-
     
 
     public PriceDataOptions(DateOnly date, string zone, string documentType)

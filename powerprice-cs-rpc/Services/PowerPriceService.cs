@@ -25,7 +25,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
         {
             Zone = request.RequestOptions.Zone,
             Date = DateOnly.FromDateTime(request.RequestOptions.Date.ToDateTime()),
-            DocumentType = DocumentTypes.A44
+            DocumentType = request.RequestOptions.DocumentType
         };
 
         var data = PowerPriceServer.GetPriceData(broker, opts) as EntsoEPriceData;

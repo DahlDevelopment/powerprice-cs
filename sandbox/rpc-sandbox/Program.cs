@@ -20,6 +20,7 @@ if (marketDocumentMeta is not null &&  timeSeries is not null && period is not n
     Console.WriteLine("MarketDocument type: " + marketDocumentMeta.Type);
     Console.WriteLine("MarketDocument time interval start: " + marketDocumentMeta.MarketDocumentTimeInterval.Start.ToDateTime().ToString());
     Console.WriteLine("MarketDocument time interval end: " + marketDocumentMeta.MarketDocumentTimeInterval.End.ToDateTime().ToString());
+    Console.WriteLine("");
 
     Console.WriteLine("TimeSeries mRID: " + timeSeries.MRID);
     Console.WriteLine("TimeSeries businesstype: " + timeSeries.BusinessType);

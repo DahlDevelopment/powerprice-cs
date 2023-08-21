@@ -50,5 +50,6 @@ message PriceDataRequest {
 message PriceDataRequestOptions {
     string zone = 1;
     google.protobuf.Timestamp date = 2;
+    optional string documentType = 3;
 
 }

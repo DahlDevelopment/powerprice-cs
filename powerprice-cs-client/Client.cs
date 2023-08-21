@@ -19,16 +19,19 @@ namespace powerprice_cs_client
         {
             var client = new PriceDataService.PriceDataServiceClient(_grpcChannel);
 
+            var requestOtions = new PriceDataRequestOptions
+            {
+                Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(options.Date.ToDateTime(TimeOnly.Parse("00:00:00"))),
+                Zone = options.Zone
+            };
+
+            requestOtions.DocumentType = requestOtions.HasDocumentType ? requestOtions.DocumentType : PriceDataOptions.DefaultDocumentTypePriceData;
 
             var priceDataReply = client.GetPriceData(new PriceDataRequest
             {
-                RequestOptions = new PriceDataRequestOptions
-                {
-                    Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(options.Date.ToDateTime(TimeOnly.Parse("00:00:00"))),
-                    Zone = options.Zone
-                }
-        });
-
+                RequestOptions = requestOtions
+            });
+            
             return priceDataReply;
         }
 
