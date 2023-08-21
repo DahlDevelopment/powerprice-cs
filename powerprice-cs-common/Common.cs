@@ -18,7 +18,7 @@ public static class Zones
 
 public struct PriceDataOptions
 {
-    public static readonly string DefaultDocumentTypePriceData = DocumentTypes.A44;
+    public static readonly string defaultDocumentTypePriceData = DocumentTypes.A44;
     public string DocumentType { set; get; }
     public string Zone { set; get; }
     public DateOnly Date { set; get; }
@@ -30,7 +30,7 @@ public struct PriceDataOptions
         Date = date;
         DocumentType = documentType;
     }
-    public PriceDataOptions(DateOnly date, string zone) : this(date, zone, DocumentTypes.A44)
+    public PriceDataOptions(DateOnly date, string zone) : this(date, zone, defaultDocumentTypePriceData)
     {
     }
 

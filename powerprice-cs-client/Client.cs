@@ -25,7 +25,7 @@ namespace powerprice_cs_client
                 Zone = options.Zone
             };
 
-            requestOtions.DocumentType = requestOtions.HasDocumentType ? requestOtions.DocumentType : PriceDataOptions.DefaultDocumentTypePriceData;
+            requestOtions.DocumentType = requestOtions.HasDocumentType ? requestOtions.DocumentType : PriceDataOptions.defaultDocumentTypePriceData;
 
             var priceDataReply = client.GetPriceData(new PriceDataRequest
             {
