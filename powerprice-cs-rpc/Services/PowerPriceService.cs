@@ -49,34 +49,31 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
                     TimeResolution = period.Resolution
                 };
 
-                var priceDataTimeseries = new PriceDataTimeSeries
-                {
-                    MRID = data.TimeSeries.MRID,
-                    BusinessType = data.TimeSeries.BusinessType,
-                    Currency = data.TimeSeries.Currency,
-                    CurveType = timeSeries.CurveType,
-                    MeasureUnit = timeSeries.MeasureUnit,
-                    Domain = timeSeries.Domain,
-                    Periods = { priceperiod }
-                };
-
-                var marketMeta = new MarketDocumentMeta
-                {
-                    MRID = data.MRID,
-                    RevisionNumber = data.RevisonNumber,
-                    MarketDocumentTimeInterval = new RpcTimeInterval
-                    {
-                        Start = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.MarketDocumentTimeInterval!.Value.Start),
-                        End = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.MarketDocumentTimeInterval!.Value.End)
-                    },
-                    Type = data.Type
-                };
-
                 return Task.FromResult(new PriceDataReply
                 {
-                    MarketDocumentMeta = marketMeta,
-                    PriceDataTimeSeries = priceDataTimeseries
-                
+                    MarketDocumentMeta = new MarketDocumentMeta
+                    {
+                        MRID = data.MRID,
+                        RevisionNumber = data.RevisonNumber,
+                        MarketDocumentTimeInterval = new RpcTimeInterval
+                        {
+                            Start = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.MarketDocumentTimeInterval!.Value.Start),
+                            End = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(data.MarketDocumentTimeInterval!.Value.End)
+                        },
+                        Type = data.Type
+                    },
+
+                    PriceDataTimeSeries = new PriceDataTimeSeries
+                    {
+                        MRID = data.TimeSeries.MRID,
+                        BusinessType = data.TimeSeries.BusinessType,
+                        Currency = data.TimeSeries.Currency,
+                        CurveType = timeSeries.CurveType,
+                        MeasureUnit = timeSeries.MeasureUnit,
+                        Domain = timeSeries.Domain,
+                        Periods = { priceperiod }
+                    }
+
                 });
             }
             else
