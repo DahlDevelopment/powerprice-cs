@@ -1,27 +1,18 @@
-﻿using powerprice_cs_server;
+﻿using Grpc.Net.Client;
+using powerprice_cs_client;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Web;
 
-// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+// The port number must match the poert of the gRPC server
+var com = new TCPIPCom();
+var client = new Client(com);
+var reply = client.GetPowerPriceData(DateOnly.FromDateTime(DateTime.UtcNow));
+//var reply = await client.SayHelloAsync(new HelloRequest { Name = "GreeterClient" });
+//Console.WriteLine("Greeting: " + reply.Message);
 
-Console.WriteLine(DateTime.Now.ToString(""));
-
-string enstoeKeyFile = @".entsoe_key_secret";
-var line = File.ReadLines(enstoeKeyFile);
-Console.WriteLine("File Contents: " + line.First());
-
-var broker = new EntsoEBroker(line.First());
-var server = new PowerPriceServer(broker);
-
-Options opts = new()
-{
-    Zone = Zones.NO4,
-    Date = DateOnly.FromDateTime(DateTime.Today),
-    DocumentType = DocumentTypes.A44
-};
-
-server.GetPriceData(DateOnly.FromDateTime(DateTime.Today), opts);
+//var reply = await client.GetPriceDataAsync(new PriceDataRequest { Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTime.UtcNow) });
+Console.WriteLine("Price Data: " + reply.PriceData);
+Console.WriteLine("Press any key to exit...");
 
 

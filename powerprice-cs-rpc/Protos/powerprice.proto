@@ -1,0 +1,55 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "powerprice_cs_rpc";
+
+package powerprice;
+
+service PriceDataService {
+    rpc GetPriceData(PriceDataRequest) returns (PriceDataReply);
+}
+
+message PriceDataReply {
+    MarketDocumentMeta marketDocumentMeta = 1;
+    PriceDataTimeSeries priceDataTimeSeries = 2;
+}
+
+message PriceDataTimeSeries {
+    string mRID = 1;
+    string businessType = 2;
+    string measureUnit = 3;
+    string currency = 4;
+    string curveType = 5;
+    string domain = 6;
+    repeated PriceDataPeriod periods = 7;
+}
+
+message PriceDataPeriod {
+    RpcTimeInterval periodTimeInterval = 1;
+    string timeResolution = 2;
+    repeated double priceData = 3;
+}
+
+message MarketDocumentMeta {
+    string mRID = 1;
+    string revisionNumber = 2;
+    string type = 3;
+    RpcTimeInterval marketDocumentTimeInterval = 4;
+}
+
+message RpcTimeInterval {
+   google.protobuf.Timestamp start = 1;
+   google.protobuf.Timestamp end = 2;
+}
+
+message PriceDataRequest {
+    PriceDataRequestOptions requestOptions = 1;
+}
+
+message PriceDataRequestOptions {
+    string zone = 1;
+    google.protobuf.Timestamp date = 2;
+    optional string documentType = 3;
+
+}

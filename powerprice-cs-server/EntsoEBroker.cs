@@ -1,40 +1,9 @@
 ﻿using System.Web;
+using powerprice_cs_common;
 
 namespace powerprice_cs_server
 {
-
-    public static class DocumentTypes
-    {
-        public static readonly string A44 = "A44";  // Price Document
-    }
-
-    public static class Zones
-    {
-        public static readonly string NO1 = "10YNO-1--------2";  // NO1 Eastern Norway
-        public static readonly string NO2 = "10YNO-2--------T";  // NO2 Southern Norway
-        public static readonly string NO3 = "10YNO-3--------J";  // NO3 Central Norway
-        public static readonly string NO4 = "10YNO-4--------9";  // NO4 Northern Norway
-        public static readonly string NO5 = "10Y1001A1001A48H";  // NO5 Western Norway
-    }
-
-    public struct Options
-    {
-        public string   DocumentType { set; get; } = DocumentTypes.A44;
-        public string   Zone { set; get; } = Zones.NO4;
-        public DateOnly Date { set; get; } = DateOnly.FromDateTime(DateTime.Now);
-
-        public Options(DateOnly date, string documentType, string zone)
-        {
-            DocumentType = documentType;
-            Zone = zone;
-            Date = date;
-        }
-
-        public Options(DateOnly date, string documentType)   : this(date, documentType,     Zones.NO4) { }
-        public Options(DateOnly date)                        : this(date, DocumentTypes.A44, Zones.NO4) { }
-    }
-
-    public static class URLBuilder
+    internal static class URLBuilder
     {
         public static class Headers
         {
@@ -49,7 +18,7 @@ namespace powerprice_cs_server
         }
     }
 
-    public static class RESTClient
+    internal static class RESTClient
     {
         private static readonly HttpClient _client = new();
 
@@ -79,25 +48,24 @@ namespace powerprice_cs_server
 
 
     /// <summary>
-    /// EntsoEBroker: 
+    /// EntsoEPriceDataBroker: 
     ///     Implements IEntsoEBroker using the Entso-E REST API.
     /// </summary>
     /// <remarks>
     ///     Helper classes and structs defined above.
     /// </remarks>
-    public class EntsoEBroker : IEntsoEBroker
+    public class EntsoEPriceDataBroker : IEntsoEBroker
 	{
         private static readonly HttpClient _httpClient = new();
         private readonly string _entsoeapi_key;
-        public Options _options { get; set; } = new Options();
 
-        public EntsoEBroker(string entsoeapi_key)
+        public EntsoEPriceDataBroker(string entsoeapi_key)
 		{
             _entsoeapi_key = entsoeapi_key;
             Console.WriteLine("Key: " + _entsoeapi_key);
         }
 
-        ~EntsoEBroker()
+        ~EntsoEPriceDataBroker()
         {
             _httpClient.Dispose();
         }
@@ -106,16 +74,15 @@ namespace powerprice_cs_server
         /// Pulls data for the given DateOnly date
         /// </summary>
         /// <returns>IEntsoEData Containing the data pulled from Entso-E</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public IEntsoEData GetPriceData(DateOnly date)
+        public EntsoEData? GetPriceData(PriceDataOptions options)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
-                { URLBuilder.Headers.documentTypeID, _options.DocumentType },
-                { URLBuilder.Headers.inDomainID, _options.Zone },
-                { URLBuilder.Headers.outDomainID, _options.Zone },
-                { URLBuilder.Headers.periodStartID, date.ToString("yyyyMMdd") + "0000" },
-                { URLBuilder.Headers.periodEndID, date.ToString("yyyyMMdd") + "2200" }
+                { URLBuilder.Headers.documentTypeID, options.DocumentType },
+                { URLBuilder.Headers.inDomainID, options.Zone },
+                { URLBuilder.Headers.outDomainID, options.Zone },
+                { URLBuilder.Headers.periodStartID, options.Date.ToString("yyyyMMdd") + "0000" },
+                { URLBuilder.Headers.periodEndID, options.Date.ToString("yyyyMMdd") + "2200" }
             };
 
             var res = RESTClient.GetHttpRequest(URLBuilder.Headers.header, _entsoeapi_key, parameters);
@@ -124,13 +91,13 @@ namespace powerprice_cs_server
                 Console.Write(res.Result.ToString());
             }
 
-            return new EntsoEPriceData();
-        }
+            EntsoEData? priceData = null;
+            if (res.Result.ToString() is not null)
+            {
+                priceData = EntsoEPriceDataXMLParser.ParsePriceData(res.Result.ToString());
+            }
 
-        public IEntsoEData GetPriceData(DateOnly date, Options options)
-        {
-            _options = options;
-            return GetPriceData(date);
+            return priceData;
         }
     }
 }
