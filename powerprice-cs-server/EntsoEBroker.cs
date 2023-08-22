@@ -56,18 +56,11 @@ namespace powerprice_cs_server
     /// </remarks>
     public class EntsoEPriceDataBroker : IEntsoEBroker
 	{
-        private static readonly HttpClient _httpClient = new();
         private readonly string _entsoeapi_key;
 
         public EntsoEPriceDataBroker(string entsoeapi_key)
 		{
             _entsoeapi_key = entsoeapi_key;
-            Console.WriteLine("Key: " + _entsoeapi_key);
-        }
-
-        ~EntsoEPriceDataBroker()
-        {
-            _httpClient.Dispose();
         }
 
         /// <summary>
