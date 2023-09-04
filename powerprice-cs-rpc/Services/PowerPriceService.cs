@@ -19,7 +19,7 @@ public class PowerPriceService : PriceDataService.PriceDataServiceBase
         var line = File.ReadLines(enstoeKeyFile);
         //Console.WriteLine("File Contents: " + line.First());
 
-        var broker = new EntsoEPriceDataBroker(line.First());
+        var broker = new EntsoEPriceDataBroker(line.First(), new RESTClient());
 
         PriceDataOptions opts = new()
         {

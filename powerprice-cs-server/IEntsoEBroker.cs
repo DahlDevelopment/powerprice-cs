@@ -8,6 +8,9 @@ namespace powerprice_cs_server
 		EntsoEData? GetPriceData(PriceDataOptions options);
 	}
 
-	
+	public interface IEntsoECommunicator
+	{
+		public string? GetEntsoEPriceData(PriceDataOptions options, string api_key);
+	}
 }
 

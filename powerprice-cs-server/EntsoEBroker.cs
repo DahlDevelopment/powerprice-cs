@@ -18,7 +18,7 @@ namespace powerprice_cs_server
         }
     }
 
-    internal static class RESTClient
+    public class RESTClient : IEntsoECommunicator
     {
         private static readonly HttpClient _client = new();
 
@@ -43,6 +43,28 @@ namespace powerprice_cs_server
             var xml = content.ReadAsStringAsync().Result;
             return xml;
         }
+
+        public string? GetEntsoEPriceData(PriceDataOptions options, string api_key)
+        {
+            IDictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                { URLBuilder.Headers.documentTypeID, options.DocumentType },
+                { URLBuilder.Headers.inDomainID, options.Zone },
+                { URLBuilder.Headers.outDomainID, options.Zone },
+                { URLBuilder.Headers.periodStartID, options.Date.ToString("yyyyMMdd") + "0000" },
+                { URLBuilder.Headers.periodEndID, options.Date.ToString("yyyyMMdd") + "2200" }
+            };
+
+            var res = GetHttpRequest(URLBuilder.Headers.header, api_key, parameters);
+            if(res.IsCompletedSuccessfully)
+            {
+                return res.Result.ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 
 
@@ -57,10 +79,12 @@ namespace powerprice_cs_server
     public class EntsoEPriceDataBroker : IEntsoEBroker
 	{
         private readonly string _entsoeapi_key;
+        private readonly IEntsoECommunicator _communicator;
 
-        public EntsoEPriceDataBroker(string entsoeapi_key)
+        public EntsoEPriceDataBroker(string entsoeapi_key, IEntsoECommunicator communicator)
 		{
             _entsoeapi_key = entsoeapi_key;
+            _communicator = communicator;
         }
 
         /// <summary>
@@ -69,25 +93,12 @@ namespace powerprice_cs_server
         /// <returns>IEntsoEData Containing the data pulled from Entso-E</returns>
         public EntsoEData? GetPriceData(PriceDataOptions options)
         {
-            IDictionary<string, string> parameters = new Dictionary<string, string>
-            {
-                { URLBuilder.Headers.documentTypeID, options.DocumentType },
-                { URLBuilder.Headers.inDomainID, options.Zone },
-                { URLBuilder.Headers.outDomainID, options.Zone },
-                { URLBuilder.Headers.periodStartID, options.Date.ToString("yyyyMMdd") + "0000" },
-                { URLBuilder.Headers.periodEndID, options.Date.ToString("yyyyMMdd") + "2200" }
-            };
-
-            var res = RESTClient.GetHttpRequest(URLBuilder.Headers.header, _entsoeapi_key, parameters);
-            if(res.IsCompletedSuccessfully)
-            {
-                Console.Write(res.Result.ToString());
-            }
+            var result = _communicator.GetEntsoEPriceData(options, _entsoeapi_key);
 
             EntsoEData? priceData = null;
-            if (res.Result.ToString() is not null)
+            if (result is not null)
             {
-                priceData = EntsoEPriceDataXMLParser.ParsePriceData(res.Result.ToString());
+                priceData = EntsoEPriceDataXMLParser.ParsePriceData(result);
             }
 
             return priceData;
